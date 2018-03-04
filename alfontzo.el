@@ -1,4 +1,4 @@
-;;; afontzo --- Manage font sizes across machines -*- lexical-binding: t -*-
+;;; afontzo.el --- Manage font sizes across machines -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2017 Guido Schmidt
 
@@ -47,56 +47,44 @@
 (defconst alfontzo-os-mac "darwin")
 (defconst alfontzo-os-linux "linux")
 
-(defcustom alfontzo-os-font-size-map '()
+(defcustom alfontzo-os-font-size-map
+  (list `((,alfontzo-os-windows . 13)
+          (,alfontzo-os-mac . 14)
+          (,alfontzo-os-linux . 11)))
   "Associative list that stores OS specific font sizes."
   :type 'alist
   :group 'alfontzo)
 
-(add-to-list 'alfontzo-os-font-size-map
-             `(,alfontzo-os-windows . 14))
-(add-to-list 'alfontzo-os-font-size-map
-             `(,alfontzo-os-mac . 14))
-(add-to-list 'alfontzo-os-font-size-map
-             `(,alfontzo-os-linux . 14))
-
-
-(defcustom alfontzo-os-font-name-map '()
+(defcustom alfontzo-os-font-name-map
+  (list `((,alfontzo-os-windows . "Consolas")
+          (,alfontzo-os-mac . "Menlo")
+          (,alfontzo-os-linux . "Courier")))
   "Associative list that stores OS specific font names."
   :type 'alist
   :group 'alfontzo)
 
-(add-to-list 'alfontzo-os-font-name-map
-             `(,alfontzo-os-windows . "Consolas"))
-(add-to-list 'alfontzo-os-font-name-map
-             `(,alfontzo-os-mac . "Menlo"))
-(add-to-list 'alfontzo-os-font-name-map
-             `(,alfontzo-os-linux "Courier"))
-
-
-
-(defconst host-emma "Emma.local")
-(defconst host-roxy "Roxy.local")
+;; (defconst host-emma "Emma.local")
+;; (defconst host-roxy "Roxy.local")
 
 (defcustom alfontzo-host-font-scales-map '()
   "Associative list of typographic scalars to use at different machines."
   :type 'alist
   :group 'alfontzo)
 
-(add-to-list 'alfontzo-host-font-scales-map
-             `(,host-roxy . 0.875))
-(add-to-list 'alfontzo-host-font-scales-map
-             `(,host-emma . 1.125))
+;; (add-to-list 'alfontzo-host-font-scales-map
+;;              `(,host-roxy . 0.875))
+;; (add-to-list 'alfontzo-host-font-scales-map
+;;              `(,host-emma . 1.125))
 
 (defcustom alfontzo-host-font-name-map '()
   "Associative list of font names to use at different machines."
   :type 'alist
   :group 'alfontzo)
 
-(add-to-list 'alfontzo-host-font-name-map
-             `(,host-roxy . "PragmataPro"))
-(add-to-list 'alfontzo-host-font-name-map
-             `(,host-emma . "SourceCodePro"))
-
+;; (add-to-list 'alfontzo-host-font-name-map
+;;              `(,host-roxy . "PragmataPro"))
+;; (add-to-list 'alfontzo-host-font-name-map
+;;              `(,host-emma . "SourceCodePro"))
 
 
 (defun alfontzo-set-font (font size)
@@ -165,5 +153,14 @@
 ;;       (add-to-list 'host-type-scales `(,host . ,scalar))
 ;;       (set-font font-typeface (scale-with os-typescale scalar)))))
 
+(defun alfontzo-typescale (scale)
+  (interactive))
+
 (provide 'alfontzo)
-;;; alfontzo ends here
+;;; alfontzo.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(git-gutter:update-interval 2))
