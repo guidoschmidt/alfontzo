@@ -48,35 +48,36 @@
 (defconst alfontzo-os-linux "linux")
 
 (defcustom alfontzo-os-font-size-map
-  (list `((,alfontzo-os-windows . 13)
-          (,alfontzo-os-mac . 14)
-          (,alfontzo-os-linux . 11)))
+  `((,alfontzo-os-windows . 13)
+    (,alfontzo-os-mac . 14)
+    (,alfontzo-os-linux . 11))
   "Associative list that stores OS specific font sizes."
   :type 'alist
   :group 'alfontzo)
 
 (defcustom alfontzo-os-font-name-map
-  (list `((,alfontzo-os-windows . "Consolas")
-          (,alfontzo-os-mac . "Menlo")
-          (,alfontzo-os-linux . "Courier")))
+  `((,alfontzo-os-windows . "Consolas")
+    (,alfontzo-os-mac . "Menlo")
+    (,alfontzo-os-linux . "Courier"))
   "Associative list that stores OS specific font names."
+  :type 'alist
+  :group 'alfontzo)
+
+(defcustom alfontzo-host-font-scales-map
+  '()
+  "Associative list of typographic scalars to use at different machines."
   :type 'alist
   :group 'alfontzo)
 
 ;; (defconst host-emma "Emma.local")
 ;; (defconst host-roxy "Roxy.local")
-
-(defcustom alfontzo-host-font-scales-map '()
-  "Associative list of typographic scalars to use at different machines."
-  :type 'alist
-  :group 'alfontzo)
-
 ;; (add-to-list 'alfontzo-host-font-scales-map
 ;;              `(,host-roxy . 0.875))
 ;; (add-to-list 'alfontzo-host-font-scales-map
 ;;              `(,host-emma . 1.125))
 
-(defcustom alfontzo-host-font-name-map '()
+(defcustom alfontzo-host-font-name-map
+  '()
   "Associative list of font names to use at different machines."
   :type 'alist
   :group 'alfontzo)
@@ -123,38 +124,63 @@
         (string-equal (system-name) host)))
     list)))
 
-(defun alfontzo-scale-for-os ()
-  "Determine the typographic scale for the current OS."
-  (cdr (alfontzo-match-os alfontzo-os-font-size-map)))
-
 (defun alfontzo-font-for-os ()
   "Determine the font name for the current OS."
   (cdr (alfontzo-match-os alfontzo-os-font-name-map)))
 
-(defun alfontzo-scale-for-host ()
-  "Determine the typographic scale for the current machine."
-  (cdr (alfontzo-match-host alfontzo-host-font-scales-map)))
+(defun alfontzo-scale-for-os ()
+  "Determine the typographic scale for the current OS."
+  (cdr (alfontzo-match-os alfontzo-os-font-size-map)))
 
 (defun alfontzo-font-for-host ()
   "Determine the font name for the current machine."
   (cdr (alfontzo-match-host alfontzo-host-font-name-map)))
 
+(defun alfontzo-scale-for-host ()
+  "Determine the typographic scale for the current machine."
+  (cdr (alfontzo-match-host alfontzo-host-font-scales-map)))
+
+(defun alfontzo-set-font-for-host (font)
+  "Set the FONT for the current host."
+  (let ((old-value (assoc (system-name) alfontzo-host-font-name-map)))
+    (if old-value
+        (setf (cdr old-value) font)
+      (add-to-list 'alfontzo-host-font-name-map
+                   `(,(system-name) . font)))))
+
+(defun alfontzo-set-scale-for-host (size)
+  "Set the font SIZE for the current host."
+  (let ((old-value (assoc (system-name) alfontzo-host-font-scales-map)))
+    (if old-value
+        (setf (cdr old-value) size)
+      (add-to-list 'alfontzo-host-font-scales-map
+                   `(,(system-name) . size)))))
 
 ;; TODO:
-;; (defun typescale (scale)
-;;   "Adjust the typescale of the current system."
-;;   (interactive)
-;;   ;; TODO: add interactive prompt for parameters
-;;   ;; TODO: add assoc list update
-;;   (let ((host-scalar (cdr (scale-from-host)))
-;;         (os-typescale (cdr (font-for-os)))
-;;         (host (car (scale-from-host))))
-;;     (let ((scalar (/ scale (float os-typescale))))
-;;       (add-to-list 'host-type-scales `(,host . ,scalar))
-;;       (set-font font-typeface (scale-with os-typescale scalar)))))
+(defun typescale ()
+  "Adjust the typescale of the current system."
+  ;; TODO: add assoc list update
+  (let ((os-font-name (alfontzo-font-for-os))
+        (os-font-size (alfontzo-scale-for-os))
+        (host-font-name (alfontzo-font-for-host))
+        (host-font-size (alfontzo-scale-for-host)))
+    ;; (alfontzo-set-font os-font-name os-font-size)
+    ;; (print (concat os-font-name "-" (number-to-string os-font-size)))
+    (print (concat host-font-name "-" (number-to-string host-font-size)))
+    ))
 
 (defun alfontzo-typescale (scale)
-  (interactive))
+  (interactive
+   (list
+    (read-from-minibuffer
+     (concat "Fontsize for " (system-name) ": ")
+     (number-to-string (alfontzo-scale-for-host))
+     nil
+     nil
+     nil)))
+  (let ((scale (string-to-number scale)))
+    (alfontzo-set-scale-for-host scale))
+  (typescale))
 
 (provide 'alfontzo)
 ;;; alfontzo.el ends here
