@@ -186,7 +186,9 @@
      nil)))
   (let ((scale (string-to-number scale)))
     (alfontzo-set-scale-for-host scale))
-  (alfontzo-interlock-font-config))
+  (alfontzo-interlock-font-config)
+  (customize-save-variable 'alfontzo-host-font-scales-map
+                           alfontzo-host-font-scales-map))
 
 (defun alfontzo-fontface (font)
   "Prompt for FONT face for usage at the current machine."
@@ -199,8 +201,22 @@
      nil
      nil)))
   (alfontzo-set-font-for-host font)
-  (alfontzo-interlock-font-config))
+  (alfontzo-interlock-font-config)
+  (customize-save-variable 'alfontzo-host-font-name-map
+                           alfontzo-host-font-name-map))
 
+
+;;;###autoload
+(defun alfontzo-init ()
+  "Load font configurations from custom-el."
+  (add-hook 'after-init-hook
+            (lambda ()
+              (load custom-file)
+              (alfontzo-interlock-font-config))))
+
+;;; TODO:
+;; returns true if Symbola exists
+;;(member "Symbola" (font-family-list))
 
 (provide 'alfontzo)
 ;;; alfontzo.el ends here
