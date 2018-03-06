@@ -146,7 +146,7 @@
     (if old-value
         (setf (cdr old-value) font)
       (add-to-list 'alfontzo-host-font-name-map
-                   `(,(system-name) . font)))))
+                   `(,(system-name) . ,font)))))
 
 (defun alfontzo-set-scale-for-host (size)
   "Set the font SIZE for the current host."
@@ -154,39 +154,53 @@
     (if old-value
         (setf (cdr old-value) size)
       (add-to-list 'alfontzo-host-font-scales-map
-                   `(,(system-name) . size)))))
+                   `(,(system-name) . ,size)))))
 
-;; TODO:
-(defun typescale ()
+(defun alfontzo-interlock-font-config ()
   "Adjust the typescale of the current system."
-  ;; TODO: add assoc list update
   (let ((os-font-name (alfontzo-font-for-os))
         (os-font-size (alfontzo-scale-for-os))
         (host-font-name (alfontzo-font-for-host))
         (host-font-size (alfontzo-scale-for-host)))
-    ;; (alfontzo-set-font os-font-name os-font-size)
-    ;; (print (concat os-font-name "-" (number-to-string os-font-size)))
-    (print (concat host-font-name "-" (number-to-string host-font-size)))
-    ))
+    (let ((font-name (if host-font-name
+                         host-font-name
+                       os-font-name))
+          (font-size (if host-font-size
+                         host-font-size
+                       os-font-size)))
+      (print (concat "Setting font: " font-name "-"
+                     (number-to-string font-size)))
+      (alfontzo-set-font font-name font-size))))
 
 (defun alfontzo-typescale (scale)
+  "Prompt for font SCALE for usage at the current machine."
   (interactive
    (list
     (read-from-minibuffer
      (concat "Fontsize for " (system-name) ": ")
-     (number-to-string (alfontzo-scale-for-host))
+     (if (alfontzo-scale-for-host)
+         (number-to-string (alfontzo-scale-for-host))
+       "")
      nil
      nil
      nil)))
   (let ((scale (string-to-number scale)))
     (alfontzo-set-scale-for-host scale))
-  (typescale))
+  (alfontzo-interlock-font-config))
+
+(defun alfontzo-fontface (font)
+  "Prompt for FONT face for usage at the current machine."
+  (interactive
+   (list
+    (read-from-minibuffer
+     (concat "Font for " (system-name) ": ")
+     (alfontzo-font-for-host)
+     nil
+     nil
+     nil)))
+  (alfontzo-set-font-for-host font)
+  (alfontzo-interlock-font-config))
+
 
 (provide 'alfontzo)
 ;;; alfontzo.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(git-gutter:update-interval 2))
