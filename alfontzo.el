@@ -69,24 +69,11 @@
   :type 'alist
   :group 'alfontzo)
 
-;; (defconst host-emma "Emma.local")
-;; (defconst host-roxy "Roxy.local")
-;; (add-to-list 'alfontzo-host-font-scales-map
-;;              `(,host-roxy . 0.875))
-;; (add-to-list 'alfontzo-host-font-scales-map
-;;              `(,host-emma . 1.125))
-
 (defcustom alfontzo-host-font-name-map
   '()
   "Associative list of font names to use at different machines."
   :type 'alist
   :group 'alfontzo)
-
-;; (add-to-list 'alfontzo-host-font-name-map
-;;              `(,host-roxy . "PragmataPro"))
-;; (add-to-list 'alfontzo-host-font-name-map
-;;              `(,host-emma . "SourceCodePro"))
-
 
 (defun alfontzo-set-font (font size)
   "Set Emacs font via `set-frame-font' with a FONT name and SIZE."
@@ -101,10 +88,6 @@
                      font
                      " @ size "
                      (number-to-string size)))))
-
-(defun alfontzo-resize (size scalar)
-  "Scale a typeface SIZE with a SCALAR."
-  (round (* size scalar)))
 
 (defun alfontzo-match-os (list)
   "Return the first match in LIST for the current OS."
