@@ -197,9 +197,5 @@
               (load custom-file)
               (alfontzo-interlock-font-config))))
 
-;;; TODO:
-;; returns true if Symbola exists
-;;(member "Symbola" (font-family-list))
-
 (provide 'alfontzo)
 ;;; alfontzo.el ends here
