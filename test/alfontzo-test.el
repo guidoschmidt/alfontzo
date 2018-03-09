@@ -87,7 +87,7 @@
   (let ((system-type "windows-nt"))
     (should (equal 20 (alfontzo-scale-for-os)))))
 
-(ert-deftest alfontzo-font-for-host ()
+(ert-deftest test-alfontzo-font-for-host ()
   (setq alfontzo-host-font-name-map
         '(("macbook" . "Hasklig")
           ("desktop" . "SourceCodePro")
@@ -99,7 +99,7 @@
   (cl-letf ((system-name "lisp-machine"))
     (should (equal "Fira Code" (alfontzo-font-for-host)))))
 
-(ert-deftest alfontzo-scale-for-host ()
+(ert-deftest test-alfontzo-scale-for-host ()
   (setq alfontzo-host-font-scales-map
         '(("macbook" . 17)
           ("lisp-machine" . 42)
@@ -110,6 +110,22 @@
     (should (equal 42 (alfontzo-scale-for-host))))
   (cl-letf ((system-name "foobar"))
     (should (equal 9 (alfontzo-scale-for-host)))))
+
+(ert-deftest test-alfontzo-set-font-for-host ()
+  (setq alfontzo-host-font-name-map
+        '(("macbook" . "Arial")))
+  (cl-letf ((system-name "macbook"))
+    (should (equal "Arial" (alfontzo-font-for-host)))
+    (alfontzo-set-font-for-host "Menlo")
+    (should (equal "Menlo" (alfontzo-font-for-host)))))
+
+(ert-deftest test-alfontzo-set-scale-for-host ()
+  (setq alfontzo-host-font-scales-map
+        '(("macbook" . 10)))
+  (cl-letf ((system-name "macbook"))
+    (should (equal 10 (alfontzo-scale-for-host)))
+    (alfontzo-set-scale-for-host 20)
+    (should (equal 20 (alfontzo-scale-for-host)))))
 
 (provide 'alfontzo-test)
 ;;; alfontzo-test.el ends here
