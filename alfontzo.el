@@ -26,19 +26,6 @@
 
 ;;; Commentary:
 
-;; Possible names:
-;; - Typocalypse Now
-;; - Alfontzo
-;; - Fontanella
-;; - Al Fonto
-;; - Rollercoaster Typecoon
-;; - Mike Typeson
-;; - Typelord
-;; - The Fontfather
-;; - Typerider
-;; - Michael Type
-;; - Alfontzo
-
 
 ;;; Code:
 (require 'cl-lib)
