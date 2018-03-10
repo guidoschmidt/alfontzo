@@ -26,6 +26,26 @@
 
 ;;; Commentary:
 
+;; Alfontzo provides a font configuration per operating system type
+;; and machine — e.g. you work on your Laptop and use Fira Code at size 14,
+;; but on your desktop you have a display with a higher resolution and thus
+;; want to work with Consolas at size 18.
+;; Alfontzo provides `M-x alfontzo-fontface' and `M-x alfontzo-typescale' as
+;; a fast and convenient way of setting fontface and size on your current
+;; machine and stores them in `custem-set.el' to remember it for the
+;; next time Emacs is used on that specific machine.
+
+;; Example Usage:
+;;
+;; A. Initialization without further customizations:
+;;
+;; (use-package alfontzo
+;;   :ensure t
+;;   :config
+;;   (alfontzo-init))
+;;
+;; `M-x alfontzo-typescale` change the font-size for the current machine
+;; `M-x alfontzo-fontface`  change the font-face for the current machine
 
 ;;; Code:
 (require 'cl-lib)
@@ -174,7 +194,6 @@
   (alfontzo-interlock-font-config)
   (customize-save-variable 'alfontzo-host-font-name-map
                            alfontzo-host-font-name-map))
-
 
 ;;;###autoload
 (defun alfontzo-init ()
