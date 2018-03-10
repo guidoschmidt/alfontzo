@@ -1,4 +1,4 @@
-;;; afontzo.el --- Manage font sizes across machines -*- lexical-binding: t -*-
+;;; alfontzo.el --- Manage font sizes across machines -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2017 Guido Schmidt
 
