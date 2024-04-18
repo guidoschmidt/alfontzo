@@ -89,7 +89,13 @@
     (add-to-list 'default-frame-alist `(font . ,font-string))
     (if (member font (font-family-list))
         (progn
-          (set-frame-font font-string nil t))
+          ;; Previously used `set-frame-font'
+          ;; (set-frame-font font-string nil t
+          (set-face-attribute 'default nil
+                              :family font
+                              :height (* 10 size)
+                              ;; :width 'extra-expanded
+                              :weight 'light))
       (message (concat font " not available")))
     (message (concat "Emacs typeface: "
                      font
