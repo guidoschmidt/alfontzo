@@ -90,7 +90,7 @@
     (if (member font (font-family-list))
         (progn
           ;; Previously used `set-frame-font'
-          ;; (set-frame-font font-string nil t
+          (set-frame-font font-string nil t)
           (set-face-attribute 'default nil
                               :family font
                               :height (* 10 size)
